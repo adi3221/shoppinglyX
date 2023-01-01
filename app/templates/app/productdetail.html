@@ -13,8 +13,21 @@
    <hr>
    <p>{{product.description}}</p> <br>
    <h4>Rs. {{product.discounted_price}} <small class="fw-light text-decoration-line-through">Rs. {{product.selling_price}}</small></h4> <br>
-   <a href="{% url 'add-to-cart' %}" class="btn btn-primary shadow px-5 py-2">Add to Cart</a>
-   <a href="{% url 'buy-now' %}" class="btn btn-danger shadow px-5 py-2 ms-4">Buy Now</a>
+
+   {% if request.user.is_authenticated %}
+   {% if item_already_in_cart %}
+   <a href = "{% url 'showcart' %}" class="btn btn-warning shadow px-5 py-2 ms-4">Go To Cart</a>
+   {% else %}
+    <form action="/add-to-cart" class="d-inline">
+        <input type="hidden" name="prod_id" value={{product.id}} id="prod_id">
+        {% comment %} with the help of hidden form we are passing the product id to the add-to-cart URL and hence we will use product ID to getthe price and all {% endcomment %}
+        <button type="submit" class="btn btn-primary shadow px-5 py-2">Add to Cart</button>
+    </form>
+    {% endif %}
+   <a href="{% url 'checkout' %}" class="btn btn-danger shadow px-5 py-2 ms-4">Buy Now</a>
+   {% endif %}
+   <a href="{% url 'customerregistration' %}" class="btn btn-danger shadow px-5 py-2 ms-4">Register Now</a>
+   <a href="{% url 'login' %}" class="btn btn-primary shadow px-5 py-2 ms-4">Login Now</a>
    <h5 class="mt-5">Available Offers</h5>
    <ul>
     <li>Bank Offer 5% Unlimited Cashback on Flipkart Axis Bank Credit</li>
